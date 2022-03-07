@@ -1,0 +1,104 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2022-03-04T21:33:22.729Z",
+    "end": "2022-03-04T21:33:25.939Z",
+    "duration": 3210,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "33f1e551-942d-45bd-84ac-16e13e98b68d",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "2b1b9910-d6e2-4087-97f4-67c4c47b8ffa",
+          "title": "API - Coaching Info",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Coaching Info 200 Response",
+              "fullTitle": "API - Coaching Info Coaching Info 200 Response",
+              "timedOut": null,
+              "duration": 3177,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('@loginInfo').then(response => {\n  const decodedObject = JSON.parse(atob(response.body.signInResponsePayload));\n  const token = decodedObject.signInUserSession.idToken.jwtToken;\n  const salesforceId = decodedObject.signInUserSession.idToken.payload['custom:salesforceId'];\n  console.log(token);\n  console.log(salesforceId);\n  cy.request({\n    method: 'GET',\n    url: 'https://z8m0fpo6yl.execute-api.us-east-1.amazonaws.com/v1/member/' + salesforceId + '/coaching-info',\n    headers: {\n      brand: 'Pack Health',\n      authorization: 'Bearer ' + token\n    },\n    failOnStatusCode: false\n  }).as('coachingInfo');\n  cy.get('@coachingInfo').then(response => {\n    const responseBodyLength = Object.keys(response.body).length;\n    const coachingInfoObjectLength = Object.keys(response.body.coachingInfo).length;\n    console.log(response);\n    expect(response.status).to.equal(200);\n    expect(responseBodyLength).to.be.equal(2);\n    expect(coachingInfoObjectLength).to.be.equal(14);\n    expect(response.body.success).to.be.a('boolean');\n    expect(response.body.coachingInfo.cadence).to.be.a('string');\n    expect(response.body.coachingInfo.calendarURL).to.be.a('string');\n    expect(response.body.coachingInfo.coachBio).to.be.a('string');\n    expect(response.body.coachingInfo.coachEmail).to.be.a('string');\n    expect(response.body.coachingInfo.coachLastName).to.be.a('string');\n    expect(response.body.coachingInfo.coachName).to.be.a('string');\n    expect(response.body.coachingInfo.coachPhone).to.be.a('string');\n    expect(response.body.coachingInfo.coachPicture).to.be.a('string');\n    expect(response.body.coachingInfo.cadence).to.be.a('string');\n    expect(response.body.coachingInfo.currentLesson).to.be.a('string');\n    expect(response.body.coachingInfo.currentModuleStatus).to.be.a('string');\n    expect(response.body.coachingInfo.engagementDOTW).to.be.a('string');\n    expect(response.body.coachingInfo.lessonTitle).to.be.a('string');\n    expect(response.body.coachingInfo.nextCallDate).to.be.null;\n    expect(response.body.coachingInfo.nickname).to.be.a('string');\n  });\n});",
+              "err": {},
+              "uuid": "197b9cc4-c256-47fd-bbb5-93857d4020cb",
+              "parentUUID": "2b1b9910-d6e2-4087-97f4-67c4c47b8ffa",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "197b9cc4-c256-47fd-bbb5-93857d4020cb"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 3177,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.0"
+    },
+    "marge": {
+      "options": {
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.1.0"
+    }
+  }
+}

@@ -1,8 +1,4 @@
 node_modules
-dist
-*.env
-artilleryTest.yml
-*.nyc_output
-coverage
-validate.sh
-package-lock.json
+TestReport
+mochawesome-TestReport
+cypress-tests-report.json

@@ -1,0 +1,104 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2022-03-04T21:33:33.898Z",
+    "end": "2022-03-04T21:33:37.835Z",
+    "duration": 3937,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "3a28c4bf-cb22-4e45-8056-0a0aa265c607",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "b0193549-12e8-4f07-a2f8-f5d339b85441",
+          "title": "API - Hero Image",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Hero image 200 Response - Primary conidtion and brand with hero image assigned returns success with images",
+              "fullTitle": "API - Hero Image Hero image 200 Response - Primary conidtion and brand with hero image assigned returns success with images",
+              "timedOut": null,
+              "duration": 3905,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('@loginInfo').then(response => {\n  const decodedObject = JSON.parse(atob(response.body.signInResponsePayload));\n  const token = decodedObject.signInUserSession.idToken.jwtToken;\n  const salesforceId = decodedObject.signInUserSession.idToken.payload['custom:salesforceId'];\n  console.log(token);\n  console.log(salesforceId);\n  cy.request({\n    method: 'GET',\n    url: 'https://z8m0fpo6yl.execute-api.us-east-1.amazonaws.com/v1/member/' + salesforceId + '/hero-image/eyJtZW1iZXJJZCI6IjAwMzJDMDAwMDBkaGNJdFFBSSIsIm1vZHVsZUlkIjoiNTAwMkMwMDAwMEJPbU1CUUExIiwibGVzc29uUGhsdWlkIjoiM0xTNUU5NUY5N0UwMERFNyIsInNob3VsZERpc3BsYXlTdXJ2ZXkiOnRydWUsIm9yaWdpbiI6InBhY2tfaGVhbHRoX3BvcnRhbCJ9',\n    headers: {\n      brand: 'Pack Health',\n      authorization: 'Bearer ' + token\n    },\n    failOnStatusCode: false\n  }).as('heroImageInfo');\n  cy.get('@heroImageInfo').then(response => {\n    const responseBodyObjectLength = Object.keys(response.body).length;\n    const heroImageObjectLength = Object.keys(response.body.heroImageInfo).length;\n    console.log(response);\n    expect(response.status).to.equal(200);\n    expect(responseBodyObjectLength).to.be.equal(3);\n    expect(heroImageObjectLength).to.be.equal(2);\n    expect(response.body.success).to.be.a('boolean');\n    expect(response.body.errorMessage).to.be.null;\n    expect(response.body.heroImageInfo.heroImageUrl).to.be.a('string');\n    expect(response.body.heroImageInfo.heroImageAltText).to.be.a('string');\n    expect(response.body.heroImageInfo.heroImageAltText).to.include('New_Winner');\n  });\n});",
+              "err": {},
+              "uuid": "7c60fa24-cb23-4f46-9e2c-34d9df5b96e7",
+              "parentUUID": "b0193549-12e8-4f07-a2f8-f5d339b85441",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "7c60fa24-cb23-4f46-9e2c-34d9df5b96e7"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 3905,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.0"
+    },
+    "marge": {
+      "options": {
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.1.0"
+    }
+  }
+}

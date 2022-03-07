@@ -1,0 +1,104 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2022-03-04T21:34:04.813Z",
+    "end": "2022-03-04T21:34:08.115Z",
+    "duration": 3302,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "94f31b2a-2e6b-40bc-aa9c-23427a3c575d",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "349bf4d1-5f1c-4fc5-8c64-3f6c98737137",
+          "title": "API - Motivation of the Day",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Motivation of the Day 200 Response - Member has a spanish motivation of the day message",
+              "fullTitle": "API - Motivation of the Day Motivation of the Day 200 Response - Member has a spanish motivation of the day message",
+              "timedOut": null,
+              "duration": 3280,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('@loginInfo').then(response => {\n  const decodedObject = JSON.parse(atob(response.body.signInResponsePayload));\n  const token = decodedObject.signInUserSession.idToken.jwtToken;\n  const salesforceId = decodedObject.signInUserSession.idToken.payload['custom:salesforceId'];\n  console.log(token);\n  console.log(salesforceId);\n  cy.request({\n    method: 'GET',\n    url: 'https://z8m0fpo6yl.execute-api.us-east-1.amazonaws.com/v1/member/' + salesforceId + '/motivation-of-the-day',\n    headers: {\n      brand: 'Pack Health',\n      authorization: 'Bearer ' + token\n    },\n    failOnStatusCode: false\n  }).as('motdInfo');\n  cy.get('@motdInfo').then(response => {\n    const responseBodyObjectLength = Object.keys(response.body).length;\n    console.log(response);\n    expect(response.status).to.equal(200);\n    expect(responseBodyObjectLength).to.be.equal(3);\n    expect(response.body.success).to.be.a('boolean');\n    expect(response.body.errorMessage).to.be.null;\n    expect(response.body.motivationOfTheDay).to.be.a('string');\n    if (response.body.motivationOfTheDay.includes('3')) {\n      expect(response.body.motivationOfTheDay).to.include('MOTD#3: Spanish');\n    } else {\n      expect(response.body.motivationOfTheDay).to.include('MOTD#5: Spanish');\n    }\n  });\n});",
+              "err": {},
+              "uuid": "8de3c6d6-3df4-4918-a8f6-2ab6ceb1070f",
+              "parentUUID": "349bf4d1-5f1c-4fc5-8c64-3f6c98737137",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "8de3c6d6-3df4-4918-a8f6-2ab6ceb1070f"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 3280,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.0"
+    },
+    "marge": {
+      "options": {
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.1.0"
+    }
+  }
+}

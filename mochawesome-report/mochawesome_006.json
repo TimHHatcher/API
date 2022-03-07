@@ -1,0 +1,104 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2022-03-04T21:33:48.522Z",
+    "end": "2022-03-04T21:33:50.673Z",
+    "duration": 2151,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "ab1f274d-ab85-470a-aa8a-7abf3738628a",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "78001638-70ac-4272-89d8-2691f306d6f4",
+          "title": "API - Login",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Login Info 200 Response",
+              "fullTitle": "API - Login Login Info 200 Response",
+              "timedOut": null,
+              "duration": 2117,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('@loginInfo').then(response => {\n  const responseBodyObjectLength = Object.keys(response.body).length;\n  console.log(response);\n  expect(response.status).to.equal(200);\n  expect(responseBodyObjectLength).to.be.equal(5);\n  expect(response.body.success).to.be.a('boolean');\n  expect(response.body.accountFound).to.be.a('boolean');\n  expect(response.body.signInResponsePayload).to.be.a('string');\n  expect(response.body.loginAttempts).to.be.null;\n  expect(response.body.errorMessage).to.be.null;\n});",
+              "err": {},
+              "uuid": "0265f9dc-91b0-4fca-8dfc-a00cb82212f0",
+              "parentUUID": "78001638-70ac-4272-89d8-2691f306d6f4",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "0265f9dc-91b0-4fca-8dfc-a00cb82212f0"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2117,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.0"
+    },
+    "marge": {
+      "options": {
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.1.0"
+    }
+  }
+}
