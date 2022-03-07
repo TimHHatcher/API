@@ -1,0 +1,90 @@
+# This is the pipeline file for a typescript app
+# Artifact type: typescript app
+# Required Repository Variables:
+#    - LAMBDA_NAME: the first portion of the lambda you are deploying to (without the -dev, -qa, -prod suffix)
+image: node:14.17.0
+
+definitions:
+    step: &validate
+      name: Validate
+      script: 
+        - echo "Version 1.2.0"
+        - apt-get update && apt-get install -y --no-install-recommends jq
+        - package=$(<./package.json)
+        - encoded=`echo "$package" | base64`
+        - >
+          jsonString=$( jq -n \
+                  --arg bn "$BITBUCKET_REPO_SLUG" \
+                  --arg br "$BITBUCKET_BRANCH" \
+                  --arg fv "1.2.0" \
+                  --arg fn "package.json" \
+                  --arg pk "$encoded" \
+                  '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
+        - echo ${jsonString}
+        - response=$(curl -w "\n%{http_code}" "$PROD_SECURE_BASE_URL/devops/dependency-validation" -H "x-api-key:$PROD_SECURE_API_KEY" -H "Content-Type:application/json" -d "${jsonString}" )
+        - response=(${response[@]}) 
+        - status=${response[-1]}
+        - echo ${status}
+        - >
+          if [[ "${status}" -ne 200 ]]; then
+            echo "${response[@]}"
+            exit 1
+          fi
+    step: &build
+      name: build
+      script:
+        - npm install ts-node -g
+        - npm install typescript -g
+        - npm install --production
+        - tsc -p .
+        - mv node_modules dist
+        - python -c "import shutil;shutil.make_archive('$LAMBDA_NAME','zip',root_dir='dist', base_dir='.')"
+      artifacts:
+        - '*.zip'
+pipelines:
+  branches:
+    master:
+    - step: *validate
+    - step: *build
+    - step:
+          name: Deploy Lambda to PROD
+          deployment: production
+          script:
+            - pipe: atlassian/aws-lambda-deploy:0.2.1
+              variables:
+               AWS_ACCESS_KEY_ID: $PROD_AWS_ACCESS_KEY_ID
+               AWS_SECRET_ACCESS_KEY: $PROD_AWS_SECRET_ACCESS_KEY
+               AWS_DEFAULT_REGION: 'us-east-1'
+               FUNCTION_NAME: $LAMBDA_NAME-prod
+               COMMAND: 'update'
+               ZIP_FILE: '${LAMBDA_NAME}.zip'
+    '{release/*,hotfix/*}':
+    - step: *validate
+    - step: *build
+    - step:
+          name: Deploy Lambda to QA
+          deployment: staging
+          script:
+            - pipe: atlassian/aws-lambda-deploy:0.2.1
+              variables:
+               AWS_ACCESS_KEY_ID: $QA_AWS_ACCESS_KEY_ID
+               AWS_SECRET_ACCESS_KEY: $QA_AWS_SECRET_ACCESS_KEY
+               AWS_DEFAULT_REGION: 'us-east-1'
+               FUNCTION_NAME: $LAMBDA_NAME-qa
+               COMMAND: 'update'
+               ZIP_FILE: '${LAMBDA_NAME}.zip'
+    develop:
+    - step: *validate
+    - step: *build
+    - step:
+          name: Deploy Lambda to AWS DEV
+          deployment: test
+          script:
+            - pipe: atlassian/aws-lambda-deploy:0.2.1
+              variables:
+               AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
+               AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
+               AWS_DEFAULT_REGION: 'us-east-1'
+               FUNCTION_NAME: $LAMBDA_NAME-dev
+               COMMAND: 'update'
+               ZIP_FILE: '${LAMBDA_NAME}.zip'
