@@ -2,3 +2,4 @@ node_modules
 TestReport
 mochawesome-TestReport
 cypress-tests-report.json
+package-lock.json
