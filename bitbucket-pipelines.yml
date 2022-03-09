@@ -1,0 +1,80 @@
+# This is the pipeline file for a typescript app
+# Artifact type: typescript app
+# Required Repository Variables:
+#    - LAMBDA_NAME: the first portion of the lambda you are deploying to (without the -dev, -qa, -prod suffix)
+image: packhealthdev/typescript:latest
+
+pipelines:
+  branches:
+    master:
+    - step:
+        script: 
+          - package=$(<./package.json)
+          - encoded=`echo "$package" | base64`
+          - >
+            jsonString=$( jq -n \
+                    --arg bn "$BITBUCKET_REPO_SLUG" \
+                    --arg br "$BITBUCKET_BRANCH" \
+                    --arg fv "1.2.0" \
+                    --arg fn "package.json" \
+                    --arg pk "$encoded" \
+                    '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
+          - response=$(curl -w "\n%{http_code}" "$PROD_SECURE_BASE_URL/devops/dependency-validation" -H "x-api-key:$PROD_SECURE_API_KEY" -H "Content-Type:application/json" -d "${jsonString}" )
+          - response=(${response[@]}) 
+          - status=${response[-1]}
+          - echo ${status}
+          - >
+            if [[ "${status}" -ne 200 ]]; then
+              echo "${response[@]}"
+              exit 1
+            fi
+          - npm install
+          - npm run test:mwa-api
+    '{release/*,hotfix/*}':
+    - step:
+        script: 
+          - package=$(<./package.json)
+          - encoded=`echo "$package" | base64`
+          - >
+            jsonString=$( jq -n \
+                    --arg bn "$BITBUCKET_REPO_SLUG" \
+                    --arg br "$BITBUCKET_BRANCH" \
+                    --arg fv "1.2.0" \
+                    --arg fn "package.json" \
+                    --arg pk "$encoded" \
+                    '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
+          - response=$(curl -w "\n%{http_code}" "$PROD_SECURE_BASE_URL/devops/dependency-validation" -H "x-api-key:$PROD_SECURE_API_KEY" -H "Content-Type:application/json" -d "${jsonString}" )
+          - response=(${response[@]}) 
+          - status=${response[-1]}
+          - echo ${status}
+          - >
+            if [[ "${status}" -ne 200 ]]; then
+              echo "${response[@]}"
+              exit 1
+            fi
+          - npm install
+          - npm run test:mwa-api
+    develop:
+    - step:
+        script: 
+          - package=$(<./package.json)
+          - encoded=`echo "$package" | base64`
+          - >
+            jsonString=$( jq -n \
+                    --arg bn "$BITBUCKET_REPO_SLUG" \
+                    --arg br "$BITBUCKET_BRANCH" \
+                    --arg fv "1.2.0" \
+                    --arg fn "package.json" \
+                    --arg pk "$encoded" \
+                    '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
+          - response=$(curl -w "\n%{http_code}" "$PROD_SECURE_BASE_URL/devops/dependency-validation" -H "x-api-key:$PROD_SECURE_API_KEY" -H "Content-Type:application/json" -d "${jsonString}" )
+          - response=(${response[@]}) 
+          - status=${response[-1]}
+          - echo ${status}
+          - >
+            if [[ "${status}" -ne 200 ]]; then
+              echo "${response[@]}"
+              exit 1
+            fi
+          - npm install
+          - npm run test:mwa-api

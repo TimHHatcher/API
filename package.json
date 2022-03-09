@@ -1,8 +1,7 @@
 {
-	"name": "api",
-	"version": "1.0.0",
+	"name": "api-cypress",
+	"version": "1.1.0",
 	"description": "",
-	"main": "index.js",
 	"scripts": {
 		"clean:reports": "del mochawesome-report\\*.json",
 		"merge:reports": "mochawesome-merge mochawesome-report/*.json > cypress-tests-report.json",
@@ -11,13 +10,11 @@
 		"mwa-api": "npx cypress run --spec cypress/integration/memberWebApp/*.js || exit 0",
 		"test:mwa-api": "npm run clean:reports && npm run mwa-api && npm run generate:html:report"
 	},
-	"author": "",
-	"license": "ISC",
 	"devDependencies": {
-		"cypress": "^9.5.0",
-		"mochawesome": "^7.1.0",
-		"mochawesome-merge": "^4.2.1",
-		"mochawesome-report-generator": "^6.1.0",
-		"prettier": "^2.5.1"
+		"cypress": "9.5.0",
+		"mochawesome": "7.1.0",
+		"mochawesome-merge": "4.2.1",
+		"mochawesome-report-generator": "6.1.0",
+		"prettier": "2.5.1"
 	}
 }
