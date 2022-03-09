@@ -2,7 +2,7 @@
 # Artifact type: typescript app
 # Required Repository Variables:
 #    - LAMBDA_NAME: the first portion of the lambda you are deploying to (without the -dev, -qa, -prod suffix)
-image: packhealthdev/typescript:latest
+image: packhealthdev/cypress:latest
 
 pipelines:
   branches:
