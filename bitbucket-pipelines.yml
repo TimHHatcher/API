@@ -90,4 +90,5 @@ pipelines:
                     jq -r '.results[] | .suites[] | .tests[] | .title' <<< "$value"
                     jq -r '.results[] | .suites[] | .tests[] | .err.message' <<< "$value"
                     exit 1
+                fi
             done
