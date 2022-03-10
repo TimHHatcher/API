@@ -57,6 +57,14 @@ pipelines:
     develop:
     - step:
         script: 
+          - variables:
+                LAMBDA_NAME: $LAMBDA_NAME
+                AWS_ACCESS_KEY: $DEV_AWS_ACCESS_KEY_ID
+                AWS_ACCESS_SECRET: $DEV_AWS_SECRET_ACCESS_KEY
+                AWS_ACCOUNT_ID: $DEV_AWS_ACCOUNT_ID
+                SECURE_BASE_URL: $DEV_SECURE_BASE_URL
+                SECURE_API_KEY: $DEV_SECURE_API_KEY
+                MEMBER_BASE_URL: $DEV_MEMBER_BASE_URL
           - package=$(<./package.json)
           - encoded=`echo "$package" | base64`
           - >

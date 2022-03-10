@@ -1,8 +1,9 @@
+const url = `${Cypress.env("MEMBER_BASE_URL")}/user/tim.hatcher+hi1@packhealth.com/send-reset-password-code`;
 describe('API - Send Reset Password Code', () => {
 	it('Verify 200 Response', () => {
 		cy.request({
 			method: 'GET',
-			url: 'https://z8m0fpo6yl.execute-api.us-east-1.amazonaws.com/v1/user/tim.hatcher+hi1@packhealth.com/send-reset-password-code',
+			url: `${url}`,
 			failOnStatusCode: false,
 		}).as('passwordCodeInfo')
 
