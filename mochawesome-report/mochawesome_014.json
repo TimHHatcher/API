@@ -1,0 +1,104 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2022-03-04T21:34:18.425Z",
+    "end": "2022-03-04T21:34:19.101Z",
+    "duration": 676,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "116c6bcb-5557-4a5b-8546-9bd1fd036b7e",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "e0302eb3-c963-4f05-86b2-2e633a15b589",
+          "title": "API - Verify",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Verify 200 Response",
+              "fullTitle": "API - Verify Verify 200 Response",
+              "timedOut": null,
+              "duration": 662,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request({\n  method: 'GET',\n  url: 'https://z8m0fpo6yl.execute-api.us-east-1.amazonaws.com/v1/user/tim.hatcher+hi1@packhealth.com/verify',\n  failOnStatusCode: false\n}).as('verifyInfo');\ncy.get('@verifyInfo').then(response => {\n  const responseBodyObjectLength = Object.keys(response.body).length;\n  console.log(response);\n  expect(response.status).to.equal(200);\n  expect(responseBodyObjectLength).to.be.equal(4);\n  expect(response.body.success).to.be.a('boolean');\n  expect(response.body.errorMessage).to.be.null;\n  expect(response.body.hasWebAccount).to.be.a('boolean');\n  expect(response.body.memberFound).to.be.a('boolean');\n});",
+              "err": {},
+              "uuid": "fcb9eb1a-98df-4692-a89f-31b3456f5356",
+              "parentUUID": "e0302eb3-c963-4f05-86b2-2e633a15b589",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "fcb9eb1a-98df-4692-a89f-31b3456f5356"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 662,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.0"
+    },
+    "marge": {
+      "options": {
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.1.0"
+    }
+  }
+}

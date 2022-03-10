@@ -1,0 +1,104 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2022-03-04T21:34:00.166Z",
+    "end": "2022-03-04T21:34:03.560Z",
+    "duration": 3394,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "7e384908-0193-4f12-8920-df37b6281001",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "ea6396c5-6c73-4622-ac55-ba8e2dcc547f",
+          "title": "API - Motivation of the Day",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Motivation of the Day 200 Response - Member has no motivation of the day message",
+              "fullTitle": "API - Motivation of the Day Motivation of the Day 200 Response - Member has no motivation of the day message",
+              "timedOut": null,
+              "duration": 3365,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('@loginInfo').then(response => {\n  const decodedObject = JSON.parse(atob(response.body.signInResponsePayload));\n  const token = decodedObject.signInUserSession.idToken.jwtToken;\n  const salesforceId = decodedObject.signInUserSession.idToken.payload['custom:salesforceId'];\n  console.log(token);\n  console.log(salesforceId);\n  cy.request({\n    method: 'GET',\n    url: 'https://z8m0fpo6yl.execute-api.us-east-1.amazonaws.com/v1/member/' + salesforceId + '/motivation-of-the-day',\n    headers: {\n      brand: 'Pack Health',\n      authorization: 'Bearer ' + token\n    },\n    failOnStatusCode: false\n  }).as('motdInfo');\n  cy.get('@motdInfo').then(response => {\n    const responseBodyObjectLength = Object.keys(response.body).length;\n    console.log(response);\n    expect(response.status).to.equal(200);\n    expect(responseBodyObjectLength).to.be.equal(3);\n    expect(response.body.success).to.be.a('boolean');\n    expect(response.body.errorMessage).to.be.null;\n    expect(response.body.motivationOfTheDay).to.be.null;\n  });\n});",
+              "err": {},
+              "uuid": "ba3822be-82b9-46e0-8dae-5bfa036ec032",
+              "parentUUID": "ea6396c5-6c73-4622-ac55-ba8e2dcc547f",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "ba3822be-82b9-46e0-8dae-5bfa036ec032"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 3365,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.0"
+    },
+    "marge": {
+      "options": {
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.1.0"
+    }
+  }
+}
