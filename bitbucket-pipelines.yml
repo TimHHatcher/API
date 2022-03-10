@@ -79,7 +79,6 @@ pipelines:
           - npm install
           - npm run test:mwa-api
           - files=$( ls ./mochawesome-report )
-          - exitCode = 0
           - > 
             for file in $files; 
             do 
@@ -90,6 +89,5 @@ pipelines:
                 then 
                     jq -r '.results[] | .suites[] | .tests[] | .title' <<< "$value"
                     jq -r '.results[] | .suites[] | .tests[] | .err.message' <<< "$value"
-                    $exitCode=1
+                    exit 1
             done
-          - if [[ $exitCode != 0 ]]; then exit 1; fi
