@@ -9,13 +9,18 @@ pipelines:
     master:
     - step:
         script: 
+          - echo "cy-1.0.0"
+          - echo "SECURE_BASE_URL=${PROD_SECURE_BASE_URL}" >> ./.env
+          - echo "SECURE_API_KEY=${PROD_SECURE_API_KEY}" >> ./.env
+          - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
+          - while read -r line; do echo $line; done < ./.env
           - package=$(<./package.json)
           - encoded=`echo "$package" | base64`
           - >
             jsonString=$( jq -n \
                     --arg bn "$BITBUCKET_REPO_SLUG" \
                     --arg br "$BITBUCKET_BRANCH" \
-                    --arg fv "1.2.0" \
+                    --arg fv "cy-1.0.0" \
                     --arg fn "package.json" \
                     --arg pk "$encoded" \
                     '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
@@ -30,16 +35,35 @@ pipelines:
             fi
           - npm install
           - npm run test:mwa-api
+          - files=$( ls ./mochawesome-report )
+          - > 
+            for file in $files; 
+            do 
+                value=`cat ./mochawesome-report/$file`
+                hasError=($(jq '.stats.failures > 0' <<< "$value" ))
+                echo $hasError
+                if [[ "$hasError" == *"true"* ]];
+                then 
+                    jq -r '.results[] | .suites[] | .tests[] | .title' <<< "$value"
+                    jq -r '.results[] | .suites[] | .tests[] | .err.message' <<< "$value"
+                    exit 1
+                fi
+            done
     '{release/*,hotfix/*}':
     - step:
         script: 
+          - echo "cy-1.0.0"
+          - echo "SECURE_BASE_URL=${QA_SECURE_BASE_URL}" >> ./.env
+          - echo "SECURE_API_KEY=${QA_SECURE_API_KEY}" >> ./.env
+          - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
+          - while read -r line; do echo $line; done < ./.env
           - package=$(<./package.json)
           - encoded=`echo "$package" | base64`
           - >
             jsonString=$( jq -n \
                     --arg bn "$BITBUCKET_REPO_SLUG" \
                     --arg br "$BITBUCKET_BRANCH" \
-                    --arg fv "1.2.0" \
+                    --arg fv "cy-1.0.0" \
                     --arg fn "package.json" \
                     --arg pk "$encoded" \
                     '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
@@ -54,6 +78,20 @@ pipelines:
             fi
           - npm install
           - npm run test:mwa-api
+          - files=$( ls ./mochawesome-report )
+          - > 
+            for file in $files; 
+            do 
+                value=`cat ./mochawesome-report/$file`
+                hasError=($(jq '.stats.failures > 0' <<< "$value" ))
+                echo $hasError
+                if [[ "$hasError" == *"true"* ]];
+                then 
+                    jq -r '.results[] | .suites[] | .tests[] | .title' <<< "$value"
+                    jq -r '.results[] | .suites[] | .tests[] | .err.message' <<< "$value"
+                    exit 1
+                fi
+            done
     develop:
     - step:
         script: 
