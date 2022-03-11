@@ -57,6 +57,7 @@ pipelines:
     develop:
     - step:
         script: 
+          - echo "cy-1.0.0"
           - echo "SECURE_BASE_URL=${DEV_SECURE_BASE_URL}" >> ./.env
           - echo "SECURE_API_KEY=${DEV_SECURE_API_KEY}" >> ./.env
           - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
@@ -67,7 +68,7 @@ pipelines:
             jsonString=$( jq -n \
                     --arg bn "$BITBUCKET_REPO_SLUG" \
                     --arg br "$BITBUCKET_BRANCH" \
-                    --arg fv "1.2.0" \
+                    --arg fv "cy-1.0.0" \
                     --arg fn "package.json" \
                     --arg pk "$encoded" \
                     '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
