@@ -82,6 +82,7 @@ pipelines:
               exit 1
             fi
           - npm install
+          - npx browserslist@latest --update-db -y
           - npm run test:mwa-api
           - files=$( ls ./mochawesome-report )
           - > 
