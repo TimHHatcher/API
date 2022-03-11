@@ -13,7 +13,6 @@ pipelines:
           - echo "SECURE_BASE_URL=${PROD_SECURE_BASE_URL}" >> ./.env
           - echo "SECURE_API_KEY=${PROD_SECURE_API_KEY}" >> ./.env
           - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
-          - while read -r line; do echo $line; done < ./.env
           - package=$(<./package.json)
           - encoded=`echo "$package" | base64`
           - >
@@ -56,7 +55,6 @@ pipelines:
           - echo "SECURE_BASE_URL=${QA_SECURE_BASE_URL}" >> ./.env
           - echo "SECURE_API_KEY=${QA_SECURE_API_KEY}" >> ./.env
           - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
-          - while read -r line; do echo $line; done < ./.env
           - package=$(<./package.json)
           - encoded=`echo "$package" | base64`
           - >
@@ -99,7 +97,6 @@ pipelines:
           - echo "SECURE_BASE_URL=${DEV_SECURE_BASE_URL}" >> ./.env
           - echo "SECURE_API_KEY=${DEV_SECURE_API_KEY}" >> ./.env
           - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
-          - while read -r line; do echo $line; done < ./.env
           - package=$(<./package.json)
           - encoded=`echo "$package" | base64`
           - >
