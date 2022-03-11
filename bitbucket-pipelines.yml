@@ -57,9 +57,12 @@ pipelines:
     develop:
     - step:
         script: 
-          - echo SECURE_BASE_URL=$DEV_SECURE_BASE_URL
-          - echo SECURE_API_KEY=$DEV_SECURE_API_KEY
-          - echo MEMBER_BASE_URL=$DEV_MEMBER_BASE_URL
+          - >
+            cat > .env << EOL
+            SECURE_BASE_URL=${DEV_SECURE_BASE_URL}
+            SECURE_API_KEY=${DEV_SECURE_API_KEY}
+            MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}
+            EOL
           - package=$(<./package.json)
           - encoded=`echo "$package" | base64`
           - >

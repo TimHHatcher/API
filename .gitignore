@@ -4,3 +4,5 @@ mochawesome-TestReport
 cypress-tests-report.json
 package-lock.json
 mochawesome-report
+.env
+test.sh
