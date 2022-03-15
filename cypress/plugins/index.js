@@ -17,11 +17,11 @@
  */
 // eslint-disable-next-line no-unused-vars
 
-require('dotenv').config({ path: '../../.env' });
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' })
+require('dotenv').config()
 module.exports = (on, config) => {
-  config.env = process.env
+	config.env = process.env
 
-  // return config
-  return config
+	// return config
+	return config
 }
