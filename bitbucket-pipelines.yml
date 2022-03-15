@@ -1,0 +1,134 @@
+# This is the pipeline file for a typescript app
+# Artifact type: typescript app
+# Required Repository Variables:
+#    - LAMBDA_NAME: the first portion of the lambda you are deploying to (without the -dev, -qa, -prod suffix)
+image: packhealthdev/cypress:latest
+
+pipelines:
+  branches:
+    master:
+    - step:
+        script: 
+          - echo "cy-1.0.0"
+          - echo "SECURE_BASE_URL=${PROD_SECURE_BASE_URL}" >> ./.env
+          - echo "SECURE_API_KEY=${PROD_SECURE_API_KEY}" >> ./.env
+          - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
+          - package=$(<./package.json)
+          - encoded=`echo "$package" | base64`
+          - >
+            jsonString=$( jq -n \
+                    --arg bn "$BITBUCKET_REPO_SLUG" \
+                    --arg br "$BITBUCKET_BRANCH" \
+                    --arg fv "cy-1.0.0" \
+                    --arg fn "package.json" \
+                    --arg pk "$encoded" \
+                    '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
+          - response=$(curl -w "\n%{http_code}" "$PROD_SECURE_BASE_URL/devops/dependency-validation" -H "x-api-key:$PROD_SECURE_API_KEY" -H "Content-Type:application/json" -d "${jsonString}" )
+          - response=(${response[@]}) 
+          - status=${response[-1]}
+          - echo ${status}
+          - >
+            if [[ "${status}" -ne 200 ]]; then
+              echo "${response[@]}"
+              exit 1
+            fi
+          - npm install
+          - npm run test:mwa-api
+          - files=$( ls ./mochawesome-report )
+          - > 
+            for file in $files; 
+            do 
+                value=`cat ./mochawesome-report/$file`
+                hasError=($(jq '.stats.failures > 0' <<< "$value" ))
+                echo $hasError
+                if [[ "$hasError" == *"true"* ]];
+                then 
+                    jq -r '.results[] | .suites[] | .tests[] | .title' <<< "$value"
+                    jq -r '.results[] | .suites[] | .tests[] | .err.message' <<< "$value"
+                    exit 1
+                fi
+            done
+    '{release/*,hotfix/*}':
+    - step:
+        script: 
+          - echo "cy-1.0.0"
+          - echo "SECURE_BASE_URL=${QA_SECURE_BASE_URL}" >> ./.env
+          - echo "SECURE_API_KEY=${QA_SECURE_API_KEY}" >> ./.env
+          - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
+          - package=$(<./package.json)
+          - encoded=`echo "$package" | base64`
+          - >
+            jsonString=$( jq -n \
+                    --arg bn "$BITBUCKET_REPO_SLUG" \
+                    --arg br "$BITBUCKET_BRANCH" \
+                    --arg fv "cy-1.0.0" \
+                    --arg fn "package.json" \
+                    --arg pk "$encoded" \
+                    '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
+          - response=$(curl -w "\n%{http_code}" "$PROD_SECURE_BASE_URL/devops/dependency-validation" -H "x-api-key:$PROD_SECURE_API_KEY" -H "Content-Type:application/json" -d "${jsonString}" )
+          - response=(${response[@]}) 
+          - status=${response[-1]}
+          - echo ${status}
+          - >
+            if [[ "${status}" -ne 200 ]]; then
+              echo "${response[@]}"
+              exit 1
+            fi
+          - npm install
+          - npm run test:mwa-api
+          - files=$( ls ./mochawesome-report )
+          - > 
+            for file in $files; 
+            do 
+                value=`cat ./mochawesome-report/$file`
+                hasError=($(jq '.stats.failures > 0' <<< "$value" ))
+                echo $hasError
+                if [[ "$hasError" == *"true"* ]];
+                then 
+                    jq -r '.results[] | .suites[] | .tests[] | .title' <<< "$value"
+                    jq -r '.results[] | .suites[] | .tests[] | .err.message' <<< "$value"
+                    exit 1
+                fi
+            done
+    develop:
+    - step:
+        script: 
+          - echo "cy-1.0.0"
+          - echo "SECURE_BASE_URL=${DEV_SECURE_BASE_URL}" >> ./.env
+          - echo "SECURE_API_KEY=${DEV_SECURE_API_KEY}" >> ./.env
+          - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
+          - package=$(<./package.json)
+          - encoded=`echo "$package" | base64`
+          - >
+            jsonString=$( jq -n \
+                    --arg bn "$BITBUCKET_REPO_SLUG" \
+                    --arg br "$BITBUCKET_BRANCH" \
+                    --arg fv "cy-1.0.0" \
+                    --arg fn "package.json" \
+                    --arg pk "$encoded" \
+                    '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
+          - response=$(curl -w "\n%{http_code}" "$PROD_SECURE_BASE_URL/devops/dependency-validation" -H "x-api-key:$PROD_SECURE_API_KEY" -H "Content-Type:application/json" -d "${jsonString}" )
+          - response=(${response[@]}) 
+          - status=${response[-1]}
+          - echo ${status}
+          - >
+            if [[ "${status}" -ne 200 ]]; then
+              echo "${response[@]}"
+              exit 1
+            fi
+          - npm install
+          - npm run test:mwa-api
+          - files=$( ls ./mochawesome-report )
+          - > 
+            for file in $files; 
+            do 
+                value=`cat ./mochawesome-report/$file`
+                hasError=($(jq '.stats.failures > 0' <<< "$value" ))
+                echo $hasError
+                if [[ "$hasError" == *"true"* ]];
+                then 
+                    jq -r '.results[] | .suites[] | .tests[] | .title' <<< "$value"
+                    jq -r '.results[] | .suites[] | .tests[] | .err.message' <<< "$value"
+                    exit 1
+                fi
+            done
