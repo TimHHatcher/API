@@ -1,9 +1,10 @@
-const url = `${Cypress.env("MEMBER_BASE_URL")}/user/login?`;
 describe('API - Hero Image', () => {
+	const url = `${Cypress.env('MEMBER_BASE_URL')}`
+
 	before('Send Login API Request', () => {
 		cy.request({
 			method: 'POST',
-			url: `${url}`,
+			url: url + '/user/login?',
 			body: {
 				email: 'tim.hatcher+hi2@packhealth.com',
 				password: 'Test123!',
@@ -40,7 +41,8 @@ describe('API - Hero Image', () => {
 			cy.request({
 				method: 'GET',
 				url:
-					'https://z8m0fpo6yl.execute-api.us-east-1.amazonaws.com/v1/member/' +
+					url +
+					'/member/' +
 					salesforceId +
 					'/hero-image/eyJtZW1iZXJJZCI6IjAwMzJDMDAwMDBkaGNJdFFBSSIsIm1vZHVsZUlkIjoiNTAwMkMwMDAwMEJPbU1CUUExIiwibGVzc29uUGhsdWlkIjoiM0xTNUU5NUY5N0UwMERFNyIsInNob3VsZERpc3BsYXlTdXJ2ZXkiOnRydWUsIm9yaWdpbiI6InBhY2tfaGVhbHRoX3BvcnRhbCJ9',
 				headers: {

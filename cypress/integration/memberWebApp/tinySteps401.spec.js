@@ -1,9 +1,10 @@
-const url = `${Cypress.env("MEMBER_BASE_URL")}/user/login?`;
 describe('API - Tiny Steps', () => {
+	const url = `${Cypress.env('MEMBER_BASE_URL')}`
+
 	before('Send Login API Request', () => {
 		cy.request({
 			method: 'POST',
-			url: `${url}`,
+			url: url + '/user/login?',
 			body: {
 				email: 'tim.hatcher+hi1@packhealth.com',
 				password: 'Test123!',
@@ -39,7 +40,7 @@ describe('API - Tiny Steps', () => {
 
 			cy.request({
 				method: 'GET',
-				url: 'https://z8m0fpo6yl.execute-api.us-east-1.amazonaws.com/v1/member/FakeMember/tiny-steps/',
+				url: url + '/member/FakeMember/tiny-steps/',
 				headers: {
 					brand: 'Pack Health',
 					authorization: 'Bearer ' + token,
