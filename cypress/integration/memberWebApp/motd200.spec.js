@@ -1,9 +1,10 @@
-const url = `${Cypress.env("MEMBER_BASE_URL")}/user/login?`;
 describe('API - Motivation of the Day', () => {
+	const url = `${Cypress.env('MEMBER_BASE_URL')}`
+
 	before('Send Login API Request', () => {
 		cy.request({
 			method: 'POST',
-			url: `${url}`,
+			url: url + '/user/login?',
 			body: {
 				email: 'tim.hatcher+hi2@packhealth.com',
 				password: 'Test123!',
@@ -39,10 +40,7 @@ describe('API - Motivation of the Day', () => {
 
 			cy.request({
 				method: 'GET',
-				url:
-					'https://z8m0fpo6yl.execute-api.us-east-1.amazonaws.com/v1/member/' +
-					salesforceId +
-					'/motivation-of-the-day',
+				url: url + '/member/' + salesforceId + '/motivation-of-the-day',
 				headers: {
 					brand: 'Pack Health',
 					authorization: 'Bearer ' + token,

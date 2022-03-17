@@ -1,9 +1,10 @@
-const url = `${Cypress.env("MEMBER_BASE_URL")}/user/login?`;
 describe('API - Login', () => {
+	const url = `${Cypress.env('MEMBER_BASE_URL')}`
+
 	before('Send Login API Request', () => {
 		cy.request({
 			method: 'POST',
-			url: `${url}`,
+			url: url + '/user/login?',
 			body: {
 				email: 'tim.hatcher+qamember1@packhealth.com',
 				password: 'Test123!',

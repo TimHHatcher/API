@@ -1,9 +1,11 @@
-const url = `${Cypress.env("MEMBER_BASE_URL")}/user/tim.hatcher+hi1@packhealth.com/send-reset-password-code`;
 describe('API - Send Reset Password Code', () => {
+	const url = `${Cypress.env('MEMBER_BASE_URL')}`
+
 	it('Verify 200 Response', () => {
 		cy.request({
 			method: 'GET',
-			url: `${url}`,
+			url:
+				url + '/user/tim.hatcher+hi1@packhealth.com/send-reset-password-code',
 			failOnStatusCode: false,
 		}).as('passwordCodeInfo')
 

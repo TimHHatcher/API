@@ -8,8 +8,8 @@
 		"create:html:report": "marge --reportDir TestReport cypress-tests-report.json --reportTitle=\"Member Web App API Tests\"",
 		"generate:html:report": "npm run merge:reports && npm run create:html:report",
 		"mwa-api": "npx cypress run --spec cypress/integration/memberWebApp/*.js || exit 0",
-		"test:mwa-api": "npm run mwa-api && npm run generate:html:report",
-		"coaching-info": "npx cypress run --spec cypress/integration/memberWebApp/coachingInfo200.spec.js || exit 0"
+		"test:mwa-api": "npm run clean:reports && npm run mwa-api && npm run generate:html:report",
+		"test:mwa-api-pipe": "npm run mwa-api && npm run generate:html:report"
 	},
 	"devDependencies": {
 		"cypress": "9.5.0",

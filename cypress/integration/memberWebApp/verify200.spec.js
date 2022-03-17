@@ -1,9 +1,10 @@
-const url = `${Cypress.env("MEMBER_BASE_URL")}/user/tim.hatcher+hi1@packhealth.com/verify`;
 describe('API - Verify', () => {
+	const url = `${Cypress.env('MEMBER_BASE_URL')}`
+
 	it('Verify 200 Response', () => {
 		cy.request({
 			method: 'GET',
-			url: `${url}`,
+			url: url + '/user/tim.hatcher+hi1@packhealth.com/verify',
 			failOnStatusCode: false,
 		}).as('verifyInfo')
 
