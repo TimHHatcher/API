@@ -57,19 +57,27 @@ describe('API - Tiny Steps', () => {
 				console.log(response)
 				expect(response.status).to.equal(200)
 				expect(responseBodyObjectLength).to.be.equal(2)
-				expect(tinyStepObjectLength).to.be.equal(17)
+				expect(tinyStepObjectLength).to.be.equal(18)
 				expect(response.body.success).to.be.a('boolean')
 				expect(response.body.tinySteps).to.be.a('array')
 				expect(response.body.tinySteps[0].actionDescription).to.be.a('string')
-				expect(response.body.tinySteps[0].prompt).to.be.a('string')
+				expect(response.body.tinySteps[0].actualValue).to.be.null
+				expect(response.body.tinySteps[0].ageInDays).to.be.a('number')
 				expect(response.body.tinySteps[0].celebration).to.be.a('string')
 				expect(response.body.tinySteps[0].createdDate).to.be.a('string')
-				expect(response.body.tinySteps[0].targetValue).to.be.a('number')
-				expect(response.body.tinySteps[0].actualValue).to.be.null
 				expect(response.body.tinySteps[0].endDate).to.be.null
 				expect(response.body.tinySteps[0].feedback).to.be.null
 				expect(response.body.tinySteps[0].feedbackSentDate).to.be.null
+				expect(response.body.tinySteps[0].feedbackUserId).to.be.null
+				expect(response.body.tinySteps[0].hideTSAlert).to.be.a('boolean')
 				expect(response.body.tinySteps[0].isAchieved).to.be.null
+				expect(response.body.tinySteps[0].isLegacyData).to.be.a('boolean')
+				expect(response.body.tinySteps[0].notes).to.be.null
+				expect(response.body.tinySteps[0].ordinalPosition).to.be.a('string')
+				expect(response.body.tinySteps[0].prompt).to.be.a('string')
+				expect(response.body.tinySteps[0].source).to.be.a('string')
+				expect(response.body.tinySteps[0].targetValue).to.be.a('number')
+				expect(response.body.tinySteps[0].tinyStepId).to.be.a('string')
 			})
 		})
 	})
