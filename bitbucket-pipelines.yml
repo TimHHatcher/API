@@ -4,131 +4,117 @@
 #    - LAMBDA_NAME: the first portion of the lambda you are deploying to (without the -dev, -qa, -prod suffix)
 image: packhealthdev/cypress:latest
 
+install: &install
+  name: "Install"
+  caches:
+    - npm
+    - cypress
+    - node
+  script:
+    - npm install
+    - npm ci
+  artifacts:
+    - build/**
+
+handle-reports: &handle-reports
+  name: "Handle Reports"
+  caches:
+    - node
+    - cypress
+  script:
+    - files=$( ls ./mochawesome-report )
+    - > 
+      for file in $files; 
+      do 
+          value=`cat ./mochawesome-report/$file`
+          hasError=($(jq '.stats.failures > 0' <<< "$value" ))
+          echo $hasError
+          if [[ "$hasError" == *"true"* ]];
+          then 
+              jq -r '.results[] | .suites[] | .tests[] | .title' <<< "$value"
+              jq -r '.results[] | .suites[] | .tests[] | .err.message' <<< "$value"
+              exit 1
+          fi
+      done
+
+coaching-info-200: &coaching-info-200
+  name: "Coaching Info 200"
+  caches:
+    - node
+    - cypress
+  script:
+    - npm run start:ci & npx wait-on http://localhost:3000
+    - npx cypress run --record --parallel --browser chrome --group "api-cypress" --ci-build-id $BITBUCKET_BUILD_NUMBER --spec cypress/integration/memberWebApp/coachingInfo200.spec.js || exit 0
+
+coaching-info-401: &coaching-info-401
+  name: "Coaching Info 401"
+  caches:
+    - node
+    - cypress
+  script:
+    - npm run start:ci & npx wait-on http://localhost:3000
+    - npx cypress run --record --parallel --browser chrome --group "api-cypress" --ci-build-id $BITBUCKET_BUILD_NUMBER --spec cypress/integration/memberWebApp/coachingInfo401.spec.js || exit 0
+
+hero-image-401: &hero-image-401
+  name: "Hero Image 401"
+  caches:
+    - node
+    - cypress
+  script:
+    - npm run start:ci & npx wait-on http://localhost:3000
+    - npx cypress run --record --parallel --browser chrome --group "api-cypress" --ci-build-id $BITBUCKET_BUILD_NUMBER --spec cypress/integration/memberWebApp/heroImage401.spec.js || exit 0
+
+hero-image-assigned-200: &hero-image-assigned-200
+  name: "Hero Image 401"
+  caches:
+    - node
+    - cypress
+  script:
+    - npm run start:ci & npx wait-on http://localhost:3000
+    - npx cypress run --record --parallel --browser chrome --group "api-cypress" --ci-build-id $BITBUCKET_BUILD_NUMBER --spec cypress/integration/memberWebApp/heroImageAssigned200.spec.js || exit 0
+
 pipelines:
-  branches:
-    master:
-      - step:
-          script:
-            - echo "cy-1.0.0"
-            - echo "SECURE_BASE_URL=${PROD_SECURE_BASE_URL}" >> ./.env
-            - echo "SECURE_API_KEY=${PROD_SECURE_API_KEY}" >> ./.env
-            - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
-            - package=$(<./package.json)
-            - encoded=`echo "$package" | base64`
-            - >
-              jsonString=$( jq -n \
-                      --arg bn "$BITBUCKET_REPO_SLUG" \
-                      --arg br "$BITBUCKET_BRANCH" \
-                      --arg fv "cy-1.0.0" \
-                      --arg fn "package.json" \
-                      --arg pk "$encoded" \
-                      '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
-            - response=$(curl -w "\n%{http_code}" "$PROD_SECURE_BASE_URL/devops/dependency-validation" -H "x-api-key:$PROD_SECURE_API_KEY" -H "Content-Type:application/json" -d "${jsonString}" )
-            - response=(${response[@]})
-            - status=${response[-1]}
-            - echo ${status}
-            - >
-              if [[ "${status}" -ne 200 ]]; then
-                echo "${response[@]}"
-                exit 1
-              fi
-            - npm install
-            - npm run test:mwa-api-pipe
-            - files=$( ls ./mochawesome-report )
-            - >
-              for file in $files; 
-              do 
-                  value=`cat ./mochawesome-report/$file`
-                  hasError=($(jq '.stats.failures > 0' <<< "$value" ))
-                  echo $hasError
-                  if [[ "$hasError" == *"true"* ]];
-                  then 
-                      jq -r '.results[] | .suites[] | .tests[] | .title' <<< "$value"
-                      jq -r '.results[] | .suites[] | .tests[] | .err.message' <<< "$value"
-                      exit 1
-                  fi
-              done
-    '{release/*,hotfix/*}':
-      - step:
-          script:
-            - echo "cy-1.0.0"
-            - echo "SECURE_BASE_URL=${QA_SECURE_BASE_URL}" >> ./.env
-            - echo "SECURE_API_KEY=${QA_SECURE_API_KEY}" >> ./.env
-            - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
-            - package=$(<./package.json)
-            - encoded=`echo "$package" | base64`
-            - >
-              jsonString=$( jq -n \
-                      --arg bn "$BITBUCKET_REPO_SLUG" \
-                      --arg br "$BITBUCKET_BRANCH" \
-                      --arg fv "cy-1.0.0" \
-                      --arg fn "package.json" \
-                      --arg pk "$encoded" \
-                      '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
-            - response=$(curl -w "\n%{http_code}" "$PROD_SECURE_BASE_URL/devops/dependency-validation" -H "x-api-key:$PROD_SECURE_API_KEY" -H "Content-Type:application/json" -d "${jsonString}" )
-            - response=(${response[@]})
-            - status=${response[-1]}
-            - echo ${status}
-            - >
-              if [[ "${status}" -ne 200 ]]; then
-                echo "${response[@]}"
-                exit 1
-              fi
-            - npm install
-            - npm run test:mwa-api-pipe
-            - files=$( ls ./mochawesome-report )
-            - >
-              for file in $files; 
-              do 
-                  value=`cat ./mochawesome-report/$file`
-                  hasError=($(jq '.stats.failures > 0' <<< "$value" ))
-                  echo $hasError
-                  if [[ "$hasError" == *"true"* ]];
-                  then 
-                      jq -r '.results[] | .suites[] | .tests[] | .title' <<< "$value"
-                      jq -r '.results[] | .suites[] | .tests[] | .err.message' <<< "$value"
-                      exit 1
-                  fi
-              done
     develop:
+    - step:
+        script: 
+          - echo "cy-1.0.0"
+          - echo "SECURE_BASE_URL=${DEV_SECURE_BASE_URL}" >> ./.env
+          - echo "SECURE_API_KEY=${DEV_SECURE_API_KEY}" >> ./.env
+          - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
+          - package=$(<./package.json)
+          - encoded=`echo "$package" | base64`
+          - >
+            jsonString=$( jq -n \
+                    --arg bn "$BITBUCKET_REPO_SLUG" \
+                    --arg br "$BITBUCKET_BRANCH" \
+                    --arg fv "cy-1.0.0" \
+                    --arg fn "package.json" \
+                    --arg pk "$encoded" \
+                    '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
+          - response=$(curl -w "\n%{http_code}" "$PROD_SECURE_BASE_URL/devops/dependency-validation" -H "x-api-key:$PROD_SECURE_API_KEY" -H "Content-Type:application/json" -d "${jsonString}" )
+          - response=(${response[@]}) 
+          - status=${response[-1]}
+          - echo ${status}
+          - >
+            if [[ "${status}" -ne 200 ]]; then
+              echo "${response[@]}"
+              exit 1
+            fi
+    - step:
+          <<: *install
+    - parallel:
       - step:
-          script:
-            - echo "cy-1.0.0"
-            - echo "SECURE_BASE_URL=${DEV_SECURE_BASE_URL}" >> ./.env
-            - echo "SECURE_API_KEY=${DEV_SECURE_API_KEY}" >> ./.env
-            - echo "MEMBER_BASE_URL=${DEV_MEMBER_BASE_URL}" >> ./.env
-            - package=$(<./package.json)
-            - encoded=`echo "$package" | base64`
-            - >
-              jsonString=$( jq -n \
-                      --arg bn "$BITBUCKET_REPO_SLUG" \
-                      --arg br "$BITBUCKET_BRANCH" \
-                      --arg fv "cy-1.0.0" \
-                      --arg fn "package.json" \
-                      --arg pk "$encoded" \
-                      '{repositoryName: $bn, branch: $br, version: $fv, fileName: $fn, package: $pk}' )
-            - response=$(curl -w "\n%{http_code}" "$PROD_SECURE_BASE_URL/devops/dependency-validation" -H "x-api-key:$PROD_SECURE_API_KEY" -H "Content-Type:application/json" -d "${jsonString}" )
-            - response=(${response[@]})
-            - status=${response[-1]}
-            - echo ${status}
-            - >
-              if [[ "${status}" -ne 200 ]]; then
-                echo "${response[@]}"
-                exit 1
-              fi
-            - npm install
-            - npm run test:mwa-api-pipe
-            - files=$( ls ./mochawesome-report )
-            - >
-              for file in $files; 
-              do 
-                  value=`cat ./mochawesome-report/$file`
-                  hasError=($(jq '.stats.failures > 0' <<< "$value" ))
-                  echo $hasError
-                  if [[ "$hasError" == *"true"* ]];
-                  then 
-                      jq -r '.results[] | .suites[] | .tests[] | .title' <<< "$value"
-                      jq -r '.results[] | .suites[] | .tests[] | .err.message' <<< "$value"
-                      exit 1
-                  fi
-              done
+          <<: *coaching-info-200
+      - step:
+          <<: *coaching-info-401
+      - step:
+          <<: *hero-image-401
+      - step:
+          <<: *coaching-info-200
+    - step:
+          <<: *handle-reports
+definitions:
+  caches:
+    yarn: $HOME/.cache
+    cypress: $HOME/.cache/Cypress
+
