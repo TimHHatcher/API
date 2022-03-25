@@ -7,7 +7,6 @@ image: packhealthdev/cypress:latest
 install: &install
   name: "Install"
   caches:
-    - npm
     - cypress
     - node
   script:
@@ -77,6 +76,9 @@ pipelines:
   branches:
     develop:
     - step:
+        caches:
+          - node
+          - cypress
         script: 
           - echo "cy-1.0.0"
           - echo "SECURE_BASE_URL=${DEV_SECURE_BASE_URL}" >> ./.env
