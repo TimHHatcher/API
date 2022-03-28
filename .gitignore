@@ -6,3 +6,4 @@ package-lock.json
 mochawesome-report
 .env
 test.sh
+*.old
