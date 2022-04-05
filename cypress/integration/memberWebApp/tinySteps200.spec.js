@@ -57,7 +57,7 @@ describe('API - Tiny Steps', () => {
 				console.log(response)
 				expect(response.status).to.equal(200)
 				expect(responseBodyObjectLength).to.be.equal(2)
-				expect(tinyStepObjectLength).to.be.equal(18)
+				expect(tinyStepObjectLength).to.be.equal(19)
 				expect(response.body.success).to.be.a('boolean')
 				expect(response.body.tinySteps).to.be.a('array')
 				expect(response.body.tinySteps[0].actionDescription).to.be.a('string')
@@ -72,6 +72,7 @@ describe('API - Tiny Steps', () => {
 				expect(response.body.tinySteps[0].hideTSAlert).to.be.a('boolean')
 				expect(response.body.tinySteps[0].isAchieved).to.be.null
 				expect(response.body.tinySteps[0].isLegacyData).to.be.a('boolean')
+				expect(response.body.tinySteps[0].modifiedBy).to.be.a('string')
 				expect(response.body.tinySteps[0].notes).to.be.null
 				expect(response.body.tinySteps[0].ordinalPosition).to.be.a('string')
 				expect(response.body.tinySteps[0].prompt).to.be.a('string')
