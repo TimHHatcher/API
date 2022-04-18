@@ -1,5 +1,6 @@
 describe('API - Tiny Steps Reflection Question Bank Post', () => {
 	const url = `${Cypress.env('MEMBER_BASE_URL')}`
+	const key = `${Cypress.env('DEV_SECURE_API_KEY')}`
 
 	before('Send Login API Request', () => {
 		cy.request({
@@ -136,7 +137,7 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 		cy.request({
 			method: 'POST',
 			url: 'https://qh38tx3i85.execute-api.us-east-1.amazonaws.com/v1/test/reset-member',
-			headers: { 'x-api-key': 'nNkERzjeZF6CO542foxg754HYqQxkZVA5ADPXwsh' },
+			headers: { 'x-api-key': key },
 			body: {
 				email: 'tim.hatcher+hi1@packhealth.com',
 				brand: 'Pack Health',
