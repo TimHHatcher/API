@@ -32,8 +32,7 @@ describe('API - Login', () => {
 
 			console.log(response)
 			expect(response.status).to.equal(200)
-			expect(responseBodyObjectLength).to.be.equal(6)
-			expect(response.body.accountFound).to.be.a('boolean')
+			expect(responseBodyObjectLength).to.be.equal(5)
 			expect(response.body.emailVerified).to.be.a('boolean')
 			expect(response.body.errorMessage).to.be.null
 			expect(response.body.loginAttempts).to.be.null
