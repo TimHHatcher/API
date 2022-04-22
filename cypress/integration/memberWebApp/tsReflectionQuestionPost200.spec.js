@@ -2,7 +2,7 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 	const url = `${Cypress.env('MEMBER_BASE_URL')}`
 	const key = `${Cypress.env('DEV_SECURE_API_KEY')}`
 
-	before('Send Login API Request', () => {
+	beforeEach('Send Login API Request', () => {
 		cy.request({
 			method: 'POST',
 			url: url + '/user/login?',
@@ -27,7 +27,7 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 		}).as('loginInfo')
 	})
 
-	it('Tiny Step Reflection Question Bank Post 200 Response', () => {
+	it('Tiny Step Reflection Question Post 200 Response', () => {
 		cy.get('@loginInfo').then(response => {
 			const decodedObject = JSON.parse(
 				atob(response.body.signInResponsePayload)
@@ -129,6 +129,65 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 				expect(response.body.tinyStepReflectionQuestionResponseIds[2]).to.be.a(
 					'string'
 				)
+			})
+		})
+	})
+
+	it('Tiny Step Reflection Question GET 200 Response', () => {
+		cy.get('@loginInfo').then(response => {
+			const decodedObject = JSON.parse(
+				atob(response.body.signInResponsePayload)
+			)
+			const token = decodedObject.signInUserSession.idToken.jwtToken
+			const salesforceId =
+				decodedObject.signInUserSession.idToken.payload['custom:salesforceId']
+
+			console.log(token)
+			console.log(salesforceId)
+
+			cy.request({
+				method: 'GET',
+				url:
+					url +
+					'/member/' +
+					salesforceId +
+					'/tiny-steps/53023/tiny-step-reflection',
+				headers: {
+					brand: 'Pack Health',
+					authorization: 'Bearer ' + token,
+				},
+				failOnStatusCode: false,
+			}).as('tinyStepGetInfo')
+
+			cy.get('@tinyStepGetInfo').then(response => {
+				const responseBodyObjectLength = Object.keys(response.body).length
+				const reflectionResponseArrayLength = Object.keys(
+					response.body.tinyStepReflectionResponse
+				).length
+
+				console.log(response)
+				expect(response.status).to.equal(200)
+				expect(responseBodyObjectLength).to.be.equal(3)
+				expect(response.body.errorMessage).to.be.null
+				expect(response.body.success).to.be.a('boolean')
+				expect(response.body.tinyStepReflectionResponse).to.be.a('array')
+				expect(reflectionResponseArrayLength).to.be.equal(3)
+				expect(
+					response.body.tinyStepReflectionResponse[0].questionText
+				).to.be.a('string')
+				expect(
+					response.body.tinyStepReflectionResponse[0].responseText
+				).to.be.a('string')
+				expect(
+					response.body.tinyStepReflectionResponse[0].sentimentQuestionResponse
+				).to.be.a('string')
+				expect(
+					response.body.tinyStepReflectionResponse[0].sentimentQuestionText
+				).to.be.a('string')
+				expect(
+					response.body.tinyStepReflectionResponse[0]
+						.tinyStepReflectionQuestionResponseId
+				).to.be.a('string')
 			})
 		})
 	})
