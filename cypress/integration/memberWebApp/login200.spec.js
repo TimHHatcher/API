@@ -6,7 +6,7 @@ describe('API - Login', () => {
 			method: 'POST',
 			url: url + '/user/login?',
 			body: {
-				email: 'tim.hatcher+qamember1@packhealth.com',
+				email: 'tim.hatcher+hi1@packhealth.com',
 				password: 'Test123!',
 				brand: 'Pack Health',
 				eventTypeCode: '',
