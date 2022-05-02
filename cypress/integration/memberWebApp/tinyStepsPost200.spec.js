@@ -75,8 +75,9 @@ describe('API - Tiny Steps Post', () => {
 
 				console.log(response)
 				expect(response.status).to.equal(200)
-				expect(responseBodyObjectLength).to.be.equal(1)
+				expect(responseBodyObjectLength).to.be.equal(2)
 				expect(response.body.success).to.be.a('boolean')
+				expect(response.body.modifiedDate).to.be.a('string')
 			})
 		})
 	})
