@@ -52,7 +52,7 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 					tinyStepReflectionQuestionResponses: [
 						{
 							tinyStepReflectionQuestionBankName: 'good test bank 1',
-							tinyStepReflectionQuestionId: 2,
+							tinyStepReflectionQuestionId: 1,
 							sortOrder: 1,
 							questionTextEnglish: 'Here is good question 1',
 							questionTextSpanish: null,
@@ -67,7 +67,7 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 						},
 						{
 							tinyStepReflectionQuestionBankName: 'good test bank 1',
-							tinyStepReflectionQuestionId: 3,
+							tinyStepReflectionQuestionId: 2,
 							sortOrder: 2,
 							questionTextEnglish: 'Here is good question 2',
 							questionTextSpanish: null,
@@ -79,21 +79,6 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 							questionResponses: null,
 							questionText: 'Here is good question 2',
 							responseText: 'Good Q2 Answer 2 more Q2 info',
-						},
-						{
-							tinyStepReflectionQuestionBankName: 'good test bank 1',
-							tinyStepReflectionQuestionId: 1,
-							sortOrder: 3,
-							questionTextEnglish: 'Here is good question 3',
-							questionTextSpanish: null,
-							questionPrompts: [
-								'Good Q3 Answer 1 ...',
-								'Good Q3 Answer 2 ...',
-								'Good Q3 Answer 3 ...',
-							],
-							questionResponses: null,
-							questionText: 'Here is good question 3',
-							responseText: 'Good Q3 Answer 2 more Q3 info',
 						},
 					],
 				},
@@ -119,14 +104,11 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 				expect(response.body.tinyStepReflectionQuestionResponseIds).to.be.a(
 					'array'
 				)
-				expect(reflectionQuestionResponseIdsArrayLength).to.be.equal(3)
+				expect(reflectionQuestionResponseIdsArrayLength).to.be.equal(2)
 				expect(response.body.tinyStepReflectionQuestionResponseIds[0]).to.be.a(
 					'string'
 				)
 				expect(response.body.tinyStepReflectionQuestionResponseIds[1]).to.be.a(
-					'string'
-				)
-				expect(response.body.tinyStepReflectionQuestionResponseIds[2]).to.be.a(
 					'string'
 				)
 			})
@@ -171,7 +153,7 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 				expect(response.body.errorMessage).to.be.null
 				expect(response.body.success).to.be.a('boolean')
 				expect(response.body.tinyStepReflectionResponse).to.be.a('array')
-				expect(reflectionResponseArrayLength).to.be.equal(3)
+				expect(reflectionResponseArrayLength).to.be.equal(2)
 				expect(
 					response.body.tinyStepReflectionResponse[0].questionText
 				).to.be.a('string')
