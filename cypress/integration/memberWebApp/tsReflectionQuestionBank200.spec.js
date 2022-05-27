@@ -57,17 +57,11 @@ describe('API - Tiny Steps Reflection Question Banks', () => {
 				const reflectionBanksObjectLength = Object.keys(
 					response.body.reflectionBanks
 				).length
-				const badTestBankArrayLength = Object.keys(
-					response.body.reflectionBanks.BAD_TEST_BANK
-				).length
 				const badTestBankArrayEntryLength = Object.keys(
 					response.body.reflectionBanks.BAD_TEST_BANK[0]
 				).length
 				const badTestBankQuestionPromptsLength = Object.keys(
 					response.body.reflectionBanks.BAD_TEST_BANK[0].questionPrompts
-				).length
-				const goodTestBankArrayLength = Object.keys(
-					response.body.reflectionBanks.GOOD_TEST_BANK
 				).length
 
 				console.log(response)
@@ -78,7 +72,6 @@ describe('API - Tiny Steps Reflection Question Banks', () => {
 				expect(reflectionBanksObjectLength).to.be.equal(2)
 				expect(response.body.success).to.be.a('boolean')
 				expect(response.body.reflectionBanks.BAD_TEST_BANK).to.be.a('array')
-				expect(badTestBankArrayLength).to.be.equal(3)
 				expect(badTestBankArrayEntryLength).to.be.equal(7)
 				expect(response.body.reflectionBanks.BAD_TEST_BANK[0]).to.be.a('object')
 				expect(
@@ -114,7 +107,6 @@ describe('API - Tiny Steps Reflection Question Banks', () => {
 						.tinyStepReflectionQuestionId
 				).to.be.a('number')
 				expect(response.body.reflectionBanks.GOOD_TEST_BANK).to.be.a('array')
-				expect(goodTestBankArrayLength).to.be.equal(3)
 			})
 		})
 	})
