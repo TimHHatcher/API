@@ -51,7 +51,7 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 					sentimentQuestionResponse: 'Good',
 					tinyStepReflectionQuestionResponses: [
 						{
-							tinyStepReflectionQuestionBankName: 'good test bank 1',
+							tinyStepReflectionQuestionBankName: 'improve_bank_1',
 							tinyStepReflectionQuestionId: 1,
 							sortOrder: 1,
 							questionTextEnglish: 'Here is good question 1',
@@ -66,7 +66,7 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 							responseText: 'Good Q1 Answer 2 more Q1 info',
 						},
 						{
-							tinyStepReflectionQuestionBankName: 'good test bank 1',
+							tinyStepReflectionQuestionBankName: 'improve_bank_1',
 							tinyStepReflectionQuestionId: 2,
 							sortOrder: 2,
 							questionTextEnglish: 'Here is good question 2',
