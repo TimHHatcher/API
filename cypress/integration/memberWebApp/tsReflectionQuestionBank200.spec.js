@@ -58,10 +58,10 @@ describe('API - Tiny Steps Reflection Question Banks', () => {
 					response.body.reflectionBanks
 				).length
 				const badTestBankArrayEntryLength = Object.keys(
-					response.body.reflectionBanks.BAD_TEST_BANK[0]
+					response.body.reflectionBanks.IMPROVE_BANK[0]
 				).length
 				const badTestBankQuestionPromptsLength = Object.keys(
-					response.body.reflectionBanks.BAD_TEST_BANK[0].questionPrompts
+					response.body.reflectionBanks.IMPROVE_BANK[0].questionPrompts
 				).length
 
 				console.log(response)
@@ -69,44 +69,44 @@ describe('API - Tiny Steps Reflection Question Banks', () => {
 				expect(responseBodyObjectLength).to.be.equal(3)
 				expect(response.body.errorMessage).to.be.null
 				expect(response.body.reflectionBanks).to.be.a('object')
-				expect(reflectionBanksObjectLength).to.be.equal(2)
+				expect(reflectionBanksObjectLength).to.be.equal(4)
 				expect(response.body.success).to.be.a('boolean')
-				expect(response.body.reflectionBanks.BAD_TEST_BANK).to.be.a('array')
+				expect(response.body.reflectionBanks.IMPROVE_BANK).to.be.a('array')
 				expect(badTestBankArrayEntryLength).to.be.equal(7)
-				expect(response.body.reflectionBanks.BAD_TEST_BANK[0]).to.be.a('object')
+				expect(response.body.reflectionBanks.IMPROVE_BANK[0]).to.be.a('object')
 				expect(
-					response.body.reflectionBanks.BAD_TEST_BANK[0].questionPrompts
+					response.body.reflectionBanks.IMPROVE_BANK[0].questionPrompts
 				).to.be.a('array')
 				expect(badTestBankQuestionPromptsLength).to.be.equal(3)
 				expect(
-					response.body.reflectionBanks.BAD_TEST_BANK[0].questionPrompts[0]
+					response.body.reflectionBanks.IMPROVE_BANK[0].questionPrompts[0]
 				).to.be.a('string')
 				expect(
-					response.body.reflectionBanks.BAD_TEST_BANK[0].questionPrompts[1]
+					response.body.reflectionBanks.IMPROVE_BANK[0].questionPrompts[1]
 				).to.be.a('string')
 				expect(
-					response.body.reflectionBanks.BAD_TEST_BANK[0].questionPrompts[1]
+					response.body.reflectionBanks.IMPROVE_BANK[0].questionPrompts[1]
 				).to.be.a('string')
-				expect(response.body.reflectionBanks.BAD_TEST_BANK[0].questionResponses)
+				expect(response.body.reflectionBanks.IMPROVE_BANK[0].questionResponses)
 					.to.be.null
 				expect(
-					response.body.reflectionBanks.BAD_TEST_BANK[0].questionTextEnglish
+					response.body.reflectionBanks.IMPROVE_BANK[0].questionTextEnglish
 				).to.be.a('string')
 				expect(
-					response.body.reflectionBanks.BAD_TEST_BANK[0].questionTextSpanish
+					response.body.reflectionBanks.IMPROVE_BANK[0].questionTextSpanish
 				).to.be.null
+				expect(response.body.reflectionBanks.IMPROVE_BANK[0].sortOrder).to.be.a(
+					'number'
+				)
 				expect(
-					response.body.reflectionBanks.BAD_TEST_BANK[0].sortOrder
-				).to.be.a('number')
-				expect(
-					response.body.reflectionBanks.BAD_TEST_BANK[0]
+					response.body.reflectionBanks.IMPROVE_BANK[0]
 						.tinyStepReflectionQuestionBankName
 				).to.be.a('string')
 				expect(
-					response.body.reflectionBanks.BAD_TEST_BANK[0]
+					response.body.reflectionBanks.IMPROVE_BANK[0]
 						.tinyStepReflectionQuestionId
 				).to.be.a('number')
-				expect(response.body.reflectionBanks.GOOD_TEST_BANK).to.be.a('array')
+				expect(response.body.reflectionBanks.CELEBRATE_BANK).to.be.a('array')
 			})
 		})
 	})
