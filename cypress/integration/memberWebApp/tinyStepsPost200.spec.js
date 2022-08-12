@@ -60,6 +60,7 @@ describe('API - Tiny Steps Post', () => {
 					feedback: null,
 					feedbackUserId: null,
 					feedbackSentDate: null,
+					feedbackPhluids: [],
 					ordinalPosition: '1',
 					ageInDays: 5,
 				},
