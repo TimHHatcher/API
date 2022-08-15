@@ -13,10 +13,11 @@ describe('API - Verify', () => {
 
 			console.log(response)
 			expect(response.status).to.equal(200)
-			expect(responseBodyObjectLength).to.be.equal(4)
+			expect(responseBodyObjectLength).to.be.equal(5)
 			expect(response.body.success).to.be.a('boolean')
 			expect(response.body.errorMessage).to.be.null
 			expect(response.body.hasWebAccount).to.be.a('boolean')
+			expect(response.body.isADuplicate).to.be.a('boolean')
 			expect(response.body.memberFound).to.be.a('boolean')
 		})
 	})
