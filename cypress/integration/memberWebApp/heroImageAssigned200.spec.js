@@ -44,7 +44,7 @@ describe('API - Hero Image', () => {
 					url +
 					'/member/' +
 					salesforceId +
-					'/hero-image/eyJtZW1iZXJJZCI6IjAwMzJDMDAwMDBkaGNJdFFBSSIsIm1vZHVsZUlkIjoiNTAwMkMwMDAwMEJPbU1CUUExIiwibGVzc29uUGhsdWlkIjoiM0xTNUU5NUY5N0UwMERFNyIsInNob3VsZERpc3BsYXlTdXJ2ZXkiOnRydWUsIm9yaWdpbiI6InBhY2tfaGVhbHRoX3BvcnRhbCJ9',
+					'/hero-image/eyJtZW1iZXJJZCI6IjAwMzhIMDAwMDBCU1BtV1FBWCIsIm1vZHVsZUlkIjoiNTAwOEgwMDAwMDNleEh1UUFJIiwibGVzc29uUGhsdWlkIjoiM0xTNUZCRDQ2OTAwMkRCRiIsInNob3VsZERpc3BsYXlTdXJ2ZXkiOnRydWV9',
 				headers: {
 					brand: 'Pack Health',
 					authorization: 'Bearer ' + token,
@@ -65,10 +65,7 @@ describe('API - Hero Image', () => {
 				expect(response.body.success).to.be.a('boolean')
 				expect(response.body.errorMessage).to.be.null
 				expect(response.body.heroImageInfo.heroImageUrl).to.be.a('string')
-				expect(response.body.heroImageInfo.heroImageAltText).to.be.a('string')
-				expect(response.body.heroImageInfo.heroImageAltText).to.include(
-					'New_Winner'
-				)
+				expect(response.body.heroImageInfo.heroImageAltText).to.be.null
 			})
 		})
 	})

@@ -45,7 +45,7 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 					url +
 					'/member/' +
 					salesforceId +
-					'/tiny-steps/53023/tiny-step-reflection',
+					'/tiny-steps/56077/tiny-step-reflection',
 				body: {
 					sentimentQuestionText: 'How did you feel about your Tiny Step?',
 					sentimentQuestionResponse: 'Good',
@@ -133,7 +133,7 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 					url +
 					'/member/' +
 					salesforceId +
-					'/tiny-steps/53023/tiny-step-reflection',
+					'/tiny-steps/56077/tiny-step-reflection',
 				headers: {
 					brand: 'Pack Health',
 					authorization: 'Bearer ' + token,
@@ -182,7 +182,7 @@ describe('API - Tiny Steps Reflection Question Bank Post', () => {
 			body: {
 				email: 'tim.hatcher+hi1@packhealth.com',
 				brand: 'Pack Health',
-				tinyStepId: '53023',
+				tinyStepId: '56077',
 				resetReflection: true,
 			},
 		})

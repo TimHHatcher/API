@@ -43,10 +43,10 @@ describe('API - Tiny Steps Post', () => {
 				url: url + '/member/' + salesforceId + '/tiny-steps/53023',
 				body: {
 					notes: null,
-					modifiedBy: '0032C00000dhbLNQAY',
+					modifiedBy: '0038H00000BSPj6QAH',
 					isLegacyData: false,
-					tinyStepId: '53023',
-					memberId: '0032C00000dhbLNQAY',
+					tinyStepId: '56077',
+					memberId: '0038H00000BSPj6QAH',
 					actionDescription: 'I want to walk more',
 					prompt: 'get home from work',
 					celebration: 'cooling off in the shade',

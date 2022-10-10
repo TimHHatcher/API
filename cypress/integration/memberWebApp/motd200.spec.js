@@ -57,11 +57,6 @@ describe('API - Motivation of the Day', () => {
 				expect(response.body.success).to.be.a('boolean')
 				expect(response.body.errorMessage).to.be.null
 				expect(response.body.motivationOfTheDay).to.be.a('string')
-				if (response.body.motivationOfTheDay.includes('3')) {
-					expect(response.body.motivationOfTheDay).to.include('MOTD#3: English')
-				} else {
-					expect(response.body.motivationOfTheDay).to.include('MOTD#5: English')
-				}
 			})
 		})
 	})
