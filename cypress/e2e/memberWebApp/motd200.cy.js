@@ -56,7 +56,7 @@ describe('API - Motivation of the Day', () => {
 				expect(responseBodyObjectLength).to.be.equal(3)
 				expect(response.body.success).to.be.a('boolean')
 				expect(response.body.errorMessage).to.be.null
-				expect(response.body.motivationOfTheDay).to.be.a('string')
+				expect(response.body.motivationOfTheDay).to.be.null
 			})
 		})
 	})
